@@ -134,32 +134,37 @@ removeDocumentsFromYesterday();
 
 // Schedule the task to run at 00:55 each day
 
-async function customScheduler() {
-  const targetTime = new Date();
-  targetTime.setHours(20, 45, 0, 0);
+async function runAtSpecificTime(targetTime, task) {
+  const now = DateTime.local();
+  const scheduledTime = DateTime.fromObject({
+    hour: targetTime.hour,
+    minute: targetTime.minute,
+    second: 0,
+  });
 
-  let timeUntilExecution = targetTime - new Date(); // Use let to allow reassignment
-
-  if (timeUntilExecution < 0) {
+  if (now >= scheduledTime) {
     // If the target time has already passed for today, schedule it for the next day
-    targetTime.setDate(targetTime.getDate() + 1);
-    timeUntilExecution = targetTime - new Date();
+    scheduledTime.plus({ days: 1 });
   }
 
-  setTimeout(async () => {
-    try {
-      await removeItemsThreeMonth();
-    } catch (error) {
-      console.error('An error occurred while removing items:', error);
-    }
+  const timeUntilExecution = scheduledTime.diff(now).as('milliseconds');
 
+  setTimeout(async () => {
+    await task();
     // Schedule the next execution (e.g., for the next day)
-    customScheduler();
+    await runAtSpecificTime(scheduledTime, task);
   }, timeUntilExecution);
 }
 
-// Start the custom scheduler
-customScheduler();
+// Example usage:
+const targetTime = { hour: 21, minute: 24 };
+
+async function myTask() {
+  // Your function to be executed at the specific time
+  console.log("Task executed at 20:30.");
+}
+
+runAtSpecificTime(targetTime, myTask);
 
 
 // Grab all bookings
