@@ -136,8 +136,12 @@ removeDocumentsFromYesterday();
 
 
 async function customScheduler() {
+
+
+  console.log('Timer Started');
+
   const targetTime = new Date();
-  targetTime.setHours(22, 7, 0, 0);
+  targetTime.setHours(0, 50, 0, 0);
 
   let timeUntilExecution = targetTime - new Date(); // Use let to allow reassignment
 
