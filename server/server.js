@@ -134,6 +134,8 @@ removeDocumentsFromYesterday();
 
 // Schedule the task to run at 00:55 each day
 
+
+
 async function runAtSpecificTime(targetTime, task) {
   const now = DateTime.local();
   const scheduledTime = DateTime.fromObject({
@@ -150,21 +152,26 @@ async function runAtSpecificTime(targetTime, task) {
   const timeUntilExecution = scheduledTime.diff(now).as('milliseconds');
 
   setTimeout(async () => {
-    await task();
+    try {
+      await task();
+    } catch (error) {
+      console.error('An error occurred while running the task:', error);
+    }
+
     // Schedule the next execution (e.g., for the next day)
     await runAtSpecificTime(scheduledTime, task);
   }, timeUntilExecution);
 }
 
 // Example usage:
-const targetTime = { hour: 21, minute: 24 };
+const targetTime = { hour: 21, minute: 28 };
 
-async function myTask() {
-  // Your function to be executed at the specific time
-  console.log("Task executed at 20:30.");
+async function removeItemsThreeMonth() {
+  // Your removeItemsThreeMonth function logic here
+  console.log("removeItemsThreeMonth executed at 20:30.");
 }
 
-runAtSpecificTime(targetTime, myTask);
+runAtSpecificTime(targetTime, removeItemsThreeMonth);
 
 
 // Grab all bookings
