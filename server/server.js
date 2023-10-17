@@ -133,17 +133,17 @@ removeDocumentsFromYesterday();
 
 
 // Schedule the task to run at 00:55 each day
+
 async function customScheduler() {
   const targetTime = new Date();
-  targetTime.setHours(20, 32, 0, 0);
+  targetTime.setHours(20, 45, 0, 0);
 
-  const now = new Date();
-  const timeUntilExecution = targetTime - now;
+  let timeUntilExecution = targetTime - new Date(); // Use let to allow reassignment
 
   if (timeUntilExecution < 0) {
     // If the target time has already passed for today, schedule it for the next day
     targetTime.setDate(targetTime.getDate() + 1);
-    timeUntilExecution = targetTime - now;
+    timeUntilExecution = targetTime - new Date();
   }
 
   setTimeout(async () => {
