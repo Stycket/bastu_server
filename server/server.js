@@ -164,12 +164,9 @@ async function runAtSpecificTime(targetTime, task) {
 }
 
 // Example usage:
-const targetTime = { hour: 21, minute: 28 };
+const targetTime = { hour: 21, minute: 37 };
 
-async function removeItemsThreeMonth() {
-  // Your removeItemsThreeMonth function logic here
-  console.log("removeItemsThreeMonth executed at 20:30.");
-}
+
 
 runAtSpecificTime(targetTime, removeItemsThreeMonth);
 
